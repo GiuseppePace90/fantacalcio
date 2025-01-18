@@ -1,14 +1,17 @@
-/* Server, Db and Routes dependencies */
+/* Import dependencies */
 const express = require('express');
+const http = require('http');
+const webSocket = require('ws');
 const cors = require("cors");
 const routerSrvModule = require('./routes/srvRoutes');
 const routerCtrlModule = require('./routes/ctrlRoutes');
 const dbModule = require("./model/database/dbConfig");
-/* Server instance */
+/* App instance */
 const app = express();
-/* WebSocket dependencies */
-const server = require("http").Server(app);
-const WebSocketServer = require("websocket").server;
+/* Server instance */
+const server = http.createServer(app);
+/* WebSocket server instance */
+const WSServer = webSocket.Server;
 /* Database instance */
 const database = new dbModule();
 
@@ -26,19 +29,42 @@ database.Connect().then(
     }
 );
 
-/* Initialize server */
+/* Initialize app */
 function serverInit() {
-
-    const port = 8080
 
     app.use(cors());
     app.use(express.json());
     app.use('/', routerSrvModule);
     app.use('/api', routerCtrlModule);
-       
-    app.listen(port, () => {
-        console.log(`Server in ascolto a http://localhost:${port}`);
+
+    wsConnection();
+}
+
+/* Initialize WS server and enstablish connection */
+function wsConnection() {
+
+    const port = 4040;
+
+    let wss = new WSServer({
+        server: server
     });
-    
+
+    wss.on('connection', function connection(ws) {
+        console.log('Client connesso');
+
+        ws.on('message', function incoming(message) {
+            console.log('Messaggio ricevuto:', message);
+        });
+
+        ws.on('close', function close() {
+            console.log('Connessione chiusa');
+        });
+
+        ws.on('error', function error(err) {
+            console.error('Errore WebSocket:', err);
+        });
+    });
+
+    server.listen(port, () => console.log("Server in ascolto alla porta " + `${port}`));
 }
 

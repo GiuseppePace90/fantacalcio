@@ -1,0 +1,24 @@
+<mat-tab-group>
+  <mat-tab label="First">
+    <div class="listone-container">
+      <h3>Lista Voti</h3>
+      <!--<button class="btn btn-danger" (click)="downloadFunction()">Download</button>-->
+      <ag-grid-angular [class]="themeClass" style="height: 500px;" [rowData]="rowData" [columnDefs]="columnDefs" />
+    </div>
+  </mat-tab>
+  <mat-tab label="Second">
+    <div class="listone-container">
+      <h3>Lista Voti</h3>
+      <!--<button class="btn btn-danger" (click)="downloadFunction()">Download</button>-->
+      <ag-grid-angular [class]="themeClass" style="height: 500px;" [rowData]="rowDataFanta1" [columnDefs]="columnDefs" [rowSelection]="rowSelection" />
+    </div>
+  </mat-tab>
+  <mat-tab label="Third">
+    <div class="listone-container">
+      <h3>Lista Voti</h3>
+      <!--<button class="btn btn-danger" (click)="downloadFunction()">Download</button>-->
+      <ag-grid-angular [class]="themeClass" style="height: 500px;" [rowData]="rowDataFanta2" [columnDefs]="columnDefs" />
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
